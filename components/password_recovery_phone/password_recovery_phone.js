@@ -43,14 +43,20 @@ export default class App extends Component {
 
         this.state = {
 
-            phone_number_field: '',
+            // phone_number_field: '',
+            //
+            // phone_number_field_error:false ,
+            // phone_number_field_valid: false,
+            // phone_number_field_error_text: '',
+            // selectedPhoneCode: "371",
+            // error_phone_code: false,
+            // valid_phone_code: false,
 
-            phone_number_field_error:false ,
-            phone_number_field_valid: false,
-            phone_number_field_error_text: '',
-            selectedPhoneCode: "371",
-            error_phone_code: false,
-            valid_phone_code: false,
+            email_field: '',
+            email_field_error:false ,
+            email_field_valid: false,
+            email_field_error_text: '',
+
 
 
 
@@ -72,16 +78,16 @@ export default class App extends Component {
 
     sendCode = () => {
         // this.props.navigation.navigate("PasswordRecoveryCode");
-        let phone_number       = this.state.phone_number_field;
-        let phone_number_valid = this.state.phone_number_field_valid;
-        let phone_code   = this.state.selectedPhoneCode;
-        let full_phone = phone_code + phone_number;
+        let email_field     = this.state.email_field;
+        let email_valid = this.state.email_field_valid;
+        // let phone_code   = this.state.selectedPhoneCode;
+        // let full_phone = phone_code + phone_number;
         let req = {
-            phone: parseInt(full_phone),
+           email: email_field,
 
         }
 
-        if (phone_number_valid === true) {
+        if (email_valid === true) {
 
             axios.post("http://vjapp.reproto.com/api/get-reset-code", req).then(
                 (response) => {
@@ -92,7 +98,7 @@ export default class App extends Component {
                     if (response.data.success === true) {
 
                         this.props.navigation.navigate("PasswordRecoveryCode", {
-                            params:full_phone,
+                            params: email_field,
                         });
 
 
@@ -105,8 +111,8 @@ export default class App extends Component {
                     console.log(err.response.data, 'err')
                     if (err.response.data.hasOwnProperty("error_message")) {
                         this.setState({
-                            phone_number_field_error: true ,
-                            phone_number_field_valid: false,
+                            email_field_error:true,
+                            email_field_valid: false,
 
                         })
                     }
@@ -117,8 +123,8 @@ export default class App extends Component {
             );
         } else  {
             this.setState({
-                phone_number_field_error: true ,
-                phone_number_field_valid: false,
+                email_field_error: true,
+                email_field_valid: false,
             })
         }
 
@@ -130,55 +136,97 @@ export default class App extends Component {
 
 
 
-    choosePhoneCode = (item) => {
+    // choosePhoneCode = (item) => {
+    //     this.setState({
+    //         selectedPhoneCode: item.value,
+    //         error_phone_code: false,
+    //         valid_phone_code: true,
+    //     })
+    //     console.log(item.value, "aaaaaaaa");
+    // }
+    //
+    //
+    //
+    //
+    // clearPhoneNumberInput = () => {
+    //     this.setState({
+    //         phone_number_field: '',
+    //         phone_number_field_error:false,
+    //     })
+    // }
+    // changeRegisterPhoneNumber = (phone_number_field) => {
+    //     this.setState({
+    //         phone_number_field: phone_number_field,
+    //     })
+    //
+    //
+    //     if (phone_number_field == "") {
+    //         this.setState({
+    //             phone_number_field_error:false,
+    //             phone_number_field_valid: false,
+    //         })
+    //     } else {
+    //         if (phone_number_field.length == 8) {
+    //
+    //             this.setState({
+    //                 phone_number_field_error:false,
+    //                 phone_number_field_valid: true,
+    //             })
+    //
+    //
+    //         } else if (phone_number_field.length > 8) {
+    //             this.setState({
+    //                 phone_number_field_error: true,
+    //                 phone_number_field_valid: false,
+    //             })
+    //         }
+    //     }
+    //
+    // }
+    //
+    // onBlurRegisterPhoneNumber = () => {
+    //
+    // }
+
+
+
+    clearEmailInput = () => {
         this.setState({
-            selectedPhoneCode: item.value,
-            error_phone_code: false,
-            valid_phone_code: true,
+            email_field: '',
+            email_field_error:false,
         })
-        console.log(item.value, "aaaaaaaa");
     }
+    changeRegisterEmail = (email_field) => {
 
+        this.setState({ email_field:email_field })
 
-
-
-    clearPhoneNumberInput = () => {
-        this.setState({
-            phone_number_field: '',
-            phone_number_field_error:false,
-        })
-    }
-    changeRegisterPhoneNumber = (phone_number_field) => {
-        this.setState({
-            phone_number_field: phone_number_field,
-        })
-
-
-        if (phone_number_field == "") {
+        if (email_field == '') {
             this.setState({
-                phone_number_field_error:false,
-                phone_number_field_valid: false,
+                email_field_error:false,
+                email_field_valid:false
             })
-        } else {
-            if (phone_number_field.length == 8) {
+            return false;
 
-                this.setState({
-                    phone_number_field_error:false,
-                    phone_number_field_valid: true,
-                })
-
-
-            } else if (phone_number_field.length > 8) {
-                this.setState({
-                    phone_number_field_error: true,
-                    phone_number_field_valid: false,
-                })
-            }
         }
 
+
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let is_error_email = reg.test(this.state.email_field) ? false : true;
+        if (is_error_email === false) {
+            this.setState({
+                email_field_error:false,
+                email_field_valid: true
+            })
+        } else {
+            this.setState({
+                email_field_valid: false
+            })
+        }
+
+
     }
 
-    onBlurRegisterPhoneNumber = () => {
+    onBlurRegisterEmail = () => {
 
     }
 
@@ -245,141 +293,189 @@ export default class App extends Component {
                         </G>
                     </Svg>
                 </View>
-                <View style={styles.phones_inputs_wrapper}>
+                {/*<View style={styles.phones_inputs_wrapper}>*/}
 
 
 
 
 
 
-                    <View style={styles.phone_code_dropdown_wrapper}>
-                        {/*<Dropdown*/}
-                        {/*    style={[styles.phone_code_dropdown, {width: 95, marginRight: 10}]}*/}
-                        {/*    data={*/}
-                        {/*        [*/}
-                        {/*            {label: '+371', value: '371'},*/}
-                        {/*            ,*/}
-                        {/*        ]*/}
+                {/*    <View style={styles.phone_code_dropdown_wrapper}>*/}
+                {/*        */}
 
-                        {/*    }*/}
-                        {/*    placeholderStyle={styles.placeholderStyle}*/}
-                        {/*    selectedTextStyle={styles.selectedTextStyle}*/}
-                        {/*    defaultValue={"371"}*/}
-                        {/*    inputSearchStyle={styles.inputSearchStyle}*/}
-                        {/*    iconStyle={styles.iconStyle}*/}
-                        {/*    placeholder={i18n.t('code')}*/}
-                        {/*    maxHeight={150}*/}
-                        {/*    dropdownPosition={{bottom: 20}}*/}
+                {/*        <DropDownPicker*/}
+                {/*            items={*/}
+                {/*                [*/}
+                {/*                    {label: '+371', value: '371'},*/}
 
 
-                        {/*    labelField="label"*/}
-                        {/*    valueField="value"*/}
-                        {/*    value={this.state.selectedPhoneCode}*/}
+                {/*                ]*/}
 
-                        {/*    onChange={item => {*/}
-                        {/*        this.choosePhoneCode(item);*/}
-                        {/*    }}*/}
-                        {/*/>*/}
-
-                        <DropDownPicker
-                            items={
-                                [
-                                    {label: '+371', value: '371'},
+                {/*            }*/}
+                {/*            placeholder={+371}*/}
+                {/*            containerStyle={{height: 52, width: 95,  marginRight: 10,}}*/}
+                {/*            style={[styles.phone_code_dropdown,*/}
+                {/*                {borderWidth:1,borderColor: this.state.error_phone_code ? '#A4223C' : this.state.valid_phone_code ? '#337363' :  '#d9d9d9'  },*/}
 
 
+
+
+                {/*            ]}*/}
+                {/*            itemStyle={{*/}
+                {/*                justifyContent: 'flex-start',*/}
+                {/*                width: '100%',*/}
+                {/*                zIndex: 15*/}
+                {/*            }}*/}
+                {/*            dropDownStyle={{backgroundColor: '#fafafa',  width: '100%', }}*/}
+                {/*            defaultValue={this.state.selectedPhoneCode}*/}
+                {/*            // onChangeItem={this.onChangeDropDownItem}*/}
+                {/*            onChangeItem={item => {*/}
+
+                {/*                this.choosePhoneCode(item);*/}
+                {/*            }}*/}
+                {/*        />*/}
+
+
+                {/*    </View>*/}
+
+                {/*    <View style={[styles.inputWrapper, {flex: 1}]}>*/}
+
+                {/*        {this.state.phone_number_field_error &&*/}
+
+                {/*        <TouchableOpacity style={styles.emptyInput}*/}
+                {/*                          onPress={()=>this.clearPhoneNumberInput()}*/}
+                {/*        >*/}
+                {/*            <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >*/}
+                {/*                <Path fillRule="evenodd" clipRule="evenodd" d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zM9.354 8.646a.5.5 0 10-.708.708L11.293 12l-2.647 2.646a.5.5 0 00.708.708L12 12.707l2.646 2.647a.5.5 0 00.708-.708L12.707 12l2.647-2.646a.5.5 0 00-.708-.708L12 11.293 9.354 8.646z" fill="#A4223C"/>*/}
+                {/*            </Svg>*/}
+                {/*        </TouchableOpacity>*/}
+
+                {/*        }*/}
+
+                {/*        {this.state.phone_number_field_valid &&*/}
+
+                {/*        <TouchableOpacity style={styles.emptyInput}>*/}
+                {/*            <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >*/}
+                {/*                <Path  fillRule="evenodd"  clipRule="evenodd"  d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zm-8.09-2.917a.66.66 0 01.442-.197.547.547 0 01.427.176c.248.228.248.62.02.87l-4.758 4.985a.626.626 0 01-.91-.02l-2.71-2.918a.62.62 0 01.041-.869.619.619 0 01.869.042l2.255 2.42 4.324-4.49z"  fill="#337363"/>*/}
+                {/*            </Svg>*/}
+                {/*        </TouchableOpacity>*/}
+
+                {/*        }*/}
+
+
+                {/*        <TextInput*/}
+                {/*            value={this.state.phone_number_field}*/}
+                {/*            onChangeText={(phone_code_field) => this.changeRegisterPhoneNumber(phone_code_field)}*/}
+                {/*            style={[*/}
+
+                {/*                styles.input,*/}
+                {/*                this.state.phone_number_field_error && {*/}
+                {/*                    borderWidth:1, borderColor:'#A4223C'*/}
+                {/*                },*/}
+                {/*                this.state.phone_number_field_valid && {*/}
+                {/*                    borderWidth:1, borderColor:'#337363'*/}
+                {/*                }*/}
+                {/*            ]}*/}
+                {/*            underlineColorAndroid ='transparent'*/}
+                {/*            label={*/}
+                {/*                <Text*/}
+                {/*                    style={[*/}
+                {/*                        {color: !this.state.phone_number_field_error ? '#55545F' : '#A4223C'},*/}
+                {/*                        {color: this.state.phone_number_field_valid ? '#337363' : '#55545F'},*/}
+                {/*                        {fontWeight: "normal", fontSize: 12}*/}
+                {/*                    ]*/}
+                {/*                    }>*/}
+                {/*                    {i18n.t('phone')}*/}
+                {/*                </Text>*/}
+                {/*            }*/}
+                {/*            error={false}*/}
+                {/*            onBlur={() => this.onBlurRegisterPhoneNumber()}*/}
+                {/*            theme={{colors: {text: '#55545F', primary: 'transparent'}}}*/}
+                {/*            underlineColor='transparent'*/}
+                {/*            selectionColor='transparent'*/}
+                {/*            activeOutlineColor='transparent'*/}
+                {/*            placeholderTextColor="#c9a477"*/}
+                {/*            keyboardType="numeric"*/}
+
+                {/*        />*/}
+
+
+                {/*    </View>*/}
+                {/*</View>*/}
+
+
+                <View style={styles.inputWrapper}>
+
+                    {this.state.email_field_error &&
+
+                    <TouchableOpacity style={styles.emptyInput}
+                                      onPress={()=>this.clearEmailInput()}
+                    >
+                        <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                            <Path fillRule="evenodd" clipRule="evenodd" d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zM9.354 8.646a.5.5 0 10-.708.708L11.293 12l-2.647 2.646a.5.5 0 00.708.708L12 12.707l2.646 2.647a.5.5 0 00.708-.708L12.707 12l2.647-2.646a.5.5 0 00-.708-.708L12 11.293 9.354 8.646z" fill="#A4223C"/>
+                        </Svg>
+                    </TouchableOpacity>
+
+                    }
+
+                    {this.state.email_field_valid &&
+
+                    <TouchableOpacity style={styles.emptyInput}>
+                        <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                            <Path  fillRule="evenodd"  clipRule="evenodd"  d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zm-8.09-2.917a.66.66 0 01.442-.197.547.547 0 01.427.176c.248.228.248.62.02.87l-4.758 4.985a.626.626 0 01-.91-.02l-2.71-2.918a.62.62 0 01.041-.869.619.619 0 01.869.042l2.255 2.42 4.324-4.49z"  fill="#337363"/>
+                        </Svg>
+                    </TouchableOpacity>
+
+                    }
+
+
+                    <TextInput
+                        value={this.state.email_field}
+                        onChangeText={(email_field) => this.changeRegisterEmail(email_field)}
+                        style={[
+
+                            styles.input,
+                            this.state.email_field_error && {
+                                borderWidth:1, borderColor:'#A4223C'
+                            },
+                            this.state.email_field_valid && {
+                                borderWidth:1, borderColor:'#337363'
+                            }
+                        ]}
+                        underlineColorAndroid ='transparent'
+                        label={
+                            <Text
+                                style={[
+                                    {color: !this.state.email_field_error ? '#55545F' : '#A4223C'},
+                                    {color: this.state.email_field_valid ? '#337363' : '#55545F'},
+                                    {fontWeight: "normal", fontSize: 12}
                                 ]
-
-                            }
-                            placeholder={+371}
-                            containerStyle={{height: 52, width: 95,  marginRight: 10,}}
-                            style={[styles.phone_code_dropdown,
-                                {borderWidth:1,borderColor: this.state.error_phone_code ? '#A4223C' : this.state.valid_phone_code ? '#337363' :  '#d9d9d9'  },
-
-
-
-
-                            ]}
-                            itemStyle={{
-                                justifyContent: 'flex-start',
-                                width: '100%',
-                                zIndex: 15
-                            }}
-                            dropDownStyle={{backgroundColor: '#fafafa',  width: '100%', }}
-                            defaultValue={this.state.selectedPhoneCode}
-                            // onChangeItem={this.onChangeDropDownItem}
-                            onChangeItem={item => {
-
-                                this.choosePhoneCode(item);
-                            }}
-                        />
-
-
-                    </View>
-
-                    <View style={[styles.inputWrapper, {flex: 1}]}>
-
-                        {this.state.phone_number_field_error &&
-
-                        <TouchableOpacity style={styles.emptyInput}
-                                          onPress={()=>this.clearPhoneNumberInput()}
-                        >
-                            <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                                <Path fillRule="evenodd" clipRule="evenodd" d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zM9.354 8.646a.5.5 0 10-.708.708L11.293 12l-2.647 2.646a.5.5 0 00.708.708L12 12.707l2.646 2.647a.5.5 0 00.708-.708L12.707 12l2.647-2.646a.5.5 0 00-.708-.708L12 11.293 9.354 8.646z" fill="#A4223C"/>
-                            </Svg>
-                        </TouchableOpacity>
-
+                                }>
+                                {i18n.t('email')}
+                            </Text>
                         }
+                        error={false}
+                        onBlur={() => this.onBlurRegisterEmail()}
+                        theme={{colors: {text: '#55545F', primary: 'transparent'}}}
+                        underlineColor='transparent'
+                        selectionColor='transparent'
+                        activeOutlineColor='transparent'
+                        placeholderTextColor="#c9a477"
 
-                        {this.state.phone_number_field_valid &&
+                    />
 
-                        <TouchableOpacity style={styles.emptyInput}>
-                            <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                                <Path  fillRule="evenodd"  clipRule="evenodd"  d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11zm1 0c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zm-8.09-2.917a.66.66 0 01.442-.197.547.547 0 01.427.176c.248.228.248.62.02.87l-4.758 4.985a.626.626 0 01-.91-.02l-2.71-2.918a.62.62 0 01.041-.869.619.619 0 01.869.042l2.255 2.42 4.324-4.49z"  fill="#337363"/>
-                            </Svg>
-                        </TouchableOpacity>
+                    {this.state.email_field_error &&
 
-                        }
+                    <Text style={styles.error_text}>
+                        {this.state.email_field_error_text}
+                    </Text>
 
-
-                        <TextInput
-                            value={this.state.phone_number_field}
-                            onChangeText={(phone_code_field) => this.changeRegisterPhoneNumber(phone_code_field)}
-                            style={[
-
-                                styles.input,
-                                this.state.phone_number_field_error && {
-                                    borderWidth:1, borderColor:'#A4223C'
-                                },
-                                this.state.phone_number_field_valid && {
-                                    borderWidth:1, borderColor:'#337363'
-                                }
-                            ]}
-                            underlineColorAndroid ='transparent'
-                            label={
-                                <Text
-                                    style={[
-                                        {color: !this.state.phone_number_field_error ? '#55545F' : '#A4223C'},
-                                        {color: this.state.phone_number_field_valid ? '#337363' : '#55545F'},
-                                        {fontWeight: "normal", fontSize: 12}
-                                    ]
-                                    }>
-                                    {i18n.t('phone')}
-                                </Text>
-                            }
-                            error={false}
-                            onBlur={() => this.onBlurRegisterPhoneNumber()}
-                            theme={{colors: {text: '#55545F', primary: 'transparent'}}}
-                            underlineColor='transparent'
-                            selectionColor='transparent'
-                            activeOutlineColor='transparent'
-                            placeholderTextColor="#c9a477"
-                            keyboardType="numeric"
-
-                        />
+                    }
 
 
-                    </View>
                 </View>
+
+
                 <View style={styles.verify_code_text_parent}>
                     <Text style={styles.verify_code_text}>{i18n.t('verify_text')}</Text>
                 </View>

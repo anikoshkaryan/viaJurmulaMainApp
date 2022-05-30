@@ -12,7 +12,6 @@ import i18n from "i18n-js";
 import {en, ru, lv} from "../../i18n/supportedLanguages";
 i18n.fallbacks = false;
 i18n.translations = { en, ru, lv };
-i18n.locale = 'en'
 
 
 
@@ -58,7 +57,7 @@ export default class App extends Component {
 
     checkUserType = async () => {
 
-        let  userData = await AsyncStorage.getItem('userData');
+        let userData = await AsyncStorage.getItem('userData');
         let userData2 = JSON.parse(userData)
 
         this.setState({
@@ -85,9 +84,13 @@ export default class App extends Component {
 
             })
             .then((responseData) => {
+
+                i18n.locale = userData2.language
+
                 console.log( responseData.data.shops, 'responseData1')
 
                     if (responseData.success === true) {
+
                          this.setState({
                              store_items: responseData.data.shops,
                          })
@@ -342,7 +345,7 @@ export default class App extends Component {
 
                                     <QRCode
                                         value={this.state.qr_token}
-                                        logoSize={50}
+                                        size={250}
                                         logoBackgroundColor='transparent'
                                     />
                                 </View>

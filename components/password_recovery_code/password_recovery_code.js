@@ -68,36 +68,22 @@ export default class App extends Component {
 
 
             resetPhone: "",
+            resetEmail: "",
             securedPhone: "",
-
-
-
-
-
+            securedEmail: "",
 
         };
 
     }
 
-    getResetPhone = () => {
-        let phone = this.props.reset_password_data;
-        let secured_phone = "+";
-
-        for (let i = 0; i < phone.length; i++) {
-              if (i < 3 || i >= phone.length-2) {
-                  secured_phone += phone[i];
-              } else  {
-                  secured_phone += "*";
-              }
-
-        }
-
-        console.log(secured_phone);
+    getResetEmail = () => {
+        let email = this.props.reset_password_data;
+        let secured_email = email;
+        console.log(secured_email);
         this.setState({
-            resetPhone: phone,
-            securedPhone: secured_phone,
+            resetEmail: email,
+            securedEmail: secured_email,
         })
-
      }
     componentDidMount() {
         const { navigation } = this.props;
@@ -105,7 +91,7 @@ export default class App extends Component {
         // this.checkUserType();
 
         this.focusListener = navigation.addListener("focus", () => {
-            this.getResetPhone();
+            this.getResetEmail();
         });
     }
     componentWillUnmount() {
@@ -131,13 +117,14 @@ export default class App extends Component {
         let code3_valid = this.state.code3_field_valid;
         let code4_valid = this.state.code4_field_valid;
 
-        let reset_phone = this.state.resetPhone;
+        let reset_email = this.state.resetEmail;
         let code = this.state.code1 + this.state.code2 + this.state.code3 + this.state.code4;
-        let req = {
-            phone: reset_phone,
-            code: code,
 
+        let req = {
+            email: reset_email,
+            code: code,
         }
+
         if (code1_valid === true && code2_valid === true && code3_valid === true && code4_valid === true) {
 
                 axios.post("http://vjapp.reproto.com/api/set-reset-code", req).then(
@@ -151,7 +138,7 @@ export default class App extends Component {
 
                             let user_id = response.data.data.reset_user_id;
                             this.props.navigation.navigate("PasswordRecoveryNewPassword", {
-                                params:{userId: user_id, userPhone: reset_phone },
+                                params:{userId: user_id, userEmail: reset_email },
                             });
 
 

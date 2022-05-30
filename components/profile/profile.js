@@ -59,6 +59,10 @@ export default class App extends Component {
     static contextType = AuthContext
 
     getUserData = async () => {
+        let userData = await AsyncStorage.getItem('userData');
+        let userData2 = JSON.parse(userData)
+
+
         let userToken = await AsyncStorage.getItem('userToken');
         let AuthStr = 'Bearer ' + userToken;
 
@@ -81,6 +85,8 @@ export default class App extends Component {
             .then((responseData) => {
                 console.log(responseData, 'responseData12')
 
+                i18n.locale = userData2.language
+
                 if (responseData.hasOwnProperty("success")) {
                     if (responseData.success === true) {
 
@@ -89,6 +95,7 @@ export default class App extends Component {
                             surname: responseData.user.surname,
                             email: responseData.user.email,
                             phone: responseData.user.phone,
+                            phone_code: responseData.user.phone_code,
                             country: responseData.user.country,
                             language: responseData.user.language,
                             gender: responseData.user.gender,
@@ -205,7 +212,7 @@ export default class App extends Component {
                        { this.state.name} { this.state.surname }
                    </Text>
                    <Text style={styles.profile_gmail_info}>{this.state.email}</Text>
-                   <Text style={styles.profile_phone_info}>+{this.state.phone}</Text>
+                   <Text style={styles.profile_phone_info}>{this.state.phone_code}{this.state.phone}</Text>
                    <Text style={styles.profile_country_info}>{this.state.country}</Text>
                    <Text style={styles.profile_language_info}>{this.state.language}</Text>
                    <Text style={styles.profile_gender_info}>{this.state.gender}</Text>

@@ -66,7 +66,7 @@ export default class App extends Component {
             confirm_password_field_valid: false,
             confirm_password_field_error_text: '',
             userId: "",
-            userPhone: "",
+            userEmail: "",
 
 
 
@@ -75,13 +75,15 @@ export default class App extends Component {
     }
 
     getUserIdPhone = () => {
-        let user_id = this.props.user_phone_and_id.userId;
-        let user_phone = this.props.user_phone_and_id.userPhone;
+        let user_id = this.props.user_email_and_id.userId;
+        let user_email = this.props.user_email_and_id.userEmail;
+
         this.setState({
             userId: user_id,
-            userPhone: user_phone,
+            userEmail: user_email,
         })
-        console.log(this.props.user_phone_and_id, 'fedfwefewfefwefewe');
+
+        console.log(this.props.user_email_and_id, 'fedfwefewfefwefewe');
     }
 
     componentDidMount() {
@@ -106,7 +108,7 @@ export default class App extends Component {
 
     redirectToCode = () => {
         this.props.navigation.navigate("PasswordRecoveryCode", {
-            params: this.state.userPhone,
+            params: this.state.userEmail,
         });
     }
 
@@ -133,9 +135,8 @@ export default class App extends Component {
                        user_id: this.state.userId,
                        password:this.state.new_password_field,
                        password_confirmation: this.state.confirm_password_field,
-
                    }
-                   console.log(req);
+                   console.log(req, 'reeeeqqqqqqreeeqqqq');
                    axios.post("http://vjapp.reproto.com/api/reset-password", req).then(
 
                        (response) => {
@@ -211,7 +212,7 @@ export default class App extends Component {
                 new_password_field_valid: false,
             })
         } else {
-            if (password_field.length > 6) {
+            if (password_field.length >= 6) {
 
                 this.setState({
                     new_password_field_error:false,
@@ -246,7 +247,7 @@ export default class App extends Component {
                 confirm_password_field_valid: false,
             })
         } else {
-            if (repeat_password_field.length > 6) {
+            if (repeat_password_field.length >= 6) {
 
                 this.setState({
                     confirm_password_field_error:false,
@@ -387,7 +388,7 @@ export default class App extends Component {
                             onBlur={() => this.onBlurRegisterPassword()}
                             theme={{colors: {text: '#55545F', primary: 'transparent'}}}
                             underlineColor='transparent'
-                            selectionColor='transparent'
+                            selectionColor='#d9d9d9'
                             activeOutlineColor='transparent'
                             placeholderTextColor="#c9a477"
                             secureTextEntry={true}
@@ -460,7 +461,7 @@ export default class App extends Component {
                             onBlur={() => this.onBlurRegisterRepeatPassword()}
                             theme={{colors: {text: '#55545F', primary: 'transparent'}}}
                             underlineColor='transparent'
-                            selectionColor='transparent'
+                            selectionColor='#d9d9d9'
                             activeOutlineColor='transparent'
                             placeholderTextColor="#c9a477"
                             secureTextEntry={true}

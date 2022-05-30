@@ -83,7 +83,7 @@ export default class App extends Component {
     render() {
 
         return (
-            <SafeAreaView style={styles.container} >
+            <View style={styles.container} >
 
                 <ImageBackground source={require('../../assets/images/background_main_dashboard_img.png')} resizeMode="cover" style={styles.dashboard_image}>
 
@@ -134,7 +134,7 @@ export default class App extends Component {
 
 
 
-            </SafeAreaView>
+            </View>
 
         );
     }

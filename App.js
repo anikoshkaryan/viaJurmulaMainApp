@@ -92,7 +92,7 @@ function PasswordRecoveryCodeScreen({route, navigation }) {
 function PasswordRecoveryNewPasswordScreen({ route, navigation }) {
     const {params} = route.params;
     return (
-        <PasswordRecoveryNewPassword  user_phone_and_id={params} navigation={navigation}  />
+        <PasswordRecoveryNewPassword  user_email_and_id={params} navigation={navigation}  />
     );
 }
 

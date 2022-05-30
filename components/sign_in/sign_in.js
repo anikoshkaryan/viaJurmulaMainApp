@@ -115,6 +115,7 @@ export default class App extends Component {
                         let user_data = {
                             role_id: response.data.user.role_id,
                             user_id: response.data.user.id,
+                            language: response.data.user.language
                         }
 
                         if ( response.data.user.role_id == 1 ) {
@@ -386,7 +387,7 @@ export default class App extends Component {
                                                 onBlur={() => this.onBlurRegisterEmail()}
                                                 theme={{colors: {text: '#55545F', primary: 'transparent'}}}
                                                 underlineColor='transparent'
-                                                selectionColor='transparent'
+                                                selectionColor='#d9d9d9'
                                                 activeOutlineColor='transparent'
                                                 placeholderTextColor="#c9a477"
 
@@ -462,7 +463,7 @@ export default class App extends Component {
                                                 onBlur={() => this.onBlurRegisterPassword()}
                                                 theme={{colors: {text: '#55545F', primary: 'transparent'}}}
                                                 underlineColor='transparent'
-                                                selectionColor='transparent'
+                                                selectionColor='#d9d9d9'
                                                 activeOutlineColor='transparent'
                                                 placeholderTextColor="#c9a477"
                                                 secureTextEntry={true}
